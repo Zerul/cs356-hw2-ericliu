@@ -3,9 +3,9 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 
-public class AdminPortal implements ActionListener{
+public class AdminPanel implements ActionListener{
 	
-	private static AdminPortal adminInstance = null;
+	private static AdminPanel adminInstance = null;
 	private HashMap<String, User> userMap;
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
@@ -14,7 +14,7 @@ public class AdminPortal implements ActionListener{
 	JLabel label;
 	JPanel treePanel;
 	
-	private AdminPortal() {
+	private AdminPanel() {
 		
 		userMap = new HashMap<String, User>();
 		groupMap = new HashMap<String, UserGroup>();
@@ -23,7 +23,7 @@ public class AdminPortal implements ActionListener{
 		frame = new JFrame("Admin Control Panel.");
 		frame.setPreferredSize(new Dimension(800, 600));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(new FlowLayout());
+		frame.getContentPane().setLayout(new GridBagLayout());
 		
 		//Panels
 		treePanel = new JPanel();
@@ -71,10 +71,14 @@ public class AdminPortal implements ActionListener{
 	    
 	}
 	
-	public static AdminPortal getInstance() {
+	public static AdminPanel getInstance() {
 		if (adminInstance == null)
-			adminInstance = new AdminPortal();
+			adminInstance = new AdminPanel();
 		return adminInstance;
+	}
+	
+	public HashMap<String, User> getUserMap() {
+		return userMap;
 	}
 
 	public void actionPerformed(ActionEvent a) {
@@ -86,8 +90,10 @@ public class AdminPortal implements ActionListener{
 	    	groupMap.put(groupName.getText(), new UserGroup(groupName.getText()));
 	    	label.setText("Group: " + groupName.getText() + " has been created.");
 	    }
-	    else if (a.getActionCommand().equals("Show group total"))
+	    else if (a.getActionCommand().equals("Open user view")) {
+	    	UserView newView = new UserView(userMap.get(userName.getText()));
 	    	label.setText(a.getActionCommand());
+	    }
 	    else if (a.getActionCommand().equals("Show message total"))
 	    	label.setText(a.getActionCommand());
 	    else if (a.getActionCommand().equals("Show user total"))

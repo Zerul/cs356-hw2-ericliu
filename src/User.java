@@ -1,4 +1,5 @@
 import java.util.List;
+import java.util.Vector;
 
 public class User {
     private String id;
@@ -9,6 +10,9 @@ public class User {
     
     public User(String name) {
     	this.setID(name);
+    	subscribers = new Vector<User>();
+    	subscriptions = new Vector<User>();
+    	newsfeed = new Vector<String>();
     }
     
     public String getID() {
@@ -19,12 +23,26 @@ public class User {
 		this.id = id;
 	}
 	
+	public String[] getNewsfeed() {
+		String[] temp = new String[newsfeed.size()];
+		int i = temp.length-1;
+		for (String news: newsfeed) {
+			temp[i--] = news;
+		}
+		return temp;
+	}
+	
 	public List<User> getSubscribers() {
 		return subscribers;
 	}
 
-	public List<User> getSubscriptions() {
-		return subscriptions;
+	public String[] getSubscriptions() {
+		String[] temp = new String[subscriptions.size()];
+		int i = temp.length-1;
+		for (User following: subscriptions) {
+			temp[i--] = following.getID();
+		}
+		return temp;
 	}
 	
 	public String getTweetMsg() {
@@ -41,7 +59,7 @@ public class User {
 	//Subscribes to target user, then updates the newsfeed
 	public void subscribe(User target) {
 		target.getSubscribers().add(this);
-		this.getSubscriptions().add(target);
+		this.subscriptions.add(target);
 		this.getUpdate(target);
 	}
 	
