@@ -9,7 +9,7 @@ public class AdminPanel implements ActionListener{
 	private HashMap<String, User> userMap;
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
-	JPanel treePanel, buttonPanel;
+	JPanel treePanel, buttonPanel, innerTop, innerMid, innerBot;
     JButton addUser, addGroup, userView, userTotal, groupTotal, messageTotal, positivePercentage;
 	JTextField userName, groupName;
 	JLabel label;
@@ -29,10 +29,17 @@ public class AdminPanel implements ActionListener{
 		
 		//Panels
 		treePanel = new JPanel();
-		treePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		buttonPanel = new JPanel();
+		innerTop = new JPanel();
+		innerMid = new JPanel();
+		innerBot = new JPanel(); 
+		treePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		buttonPanel.setLayout(new GridBagLayout());
+		innerTop.setLayout(new GridBagLayout());
+		innerMid.setLayout(new GridBagLayout());
+		innerBot.setLayout(new GridBagLayout());
+
 	    
 	    //create buttons
 	    addUser = new JButton("Create a new user");
@@ -73,48 +80,54 @@ public class AdminPanel implements ActionListener{
 		c.gridx = 1;
 		c.weightx = 1.0;
 		frame.getContentPane().add(buttonPanel, c);
-
-		c.insets = new Insets(3, 4, 3, 4);
-		c.gridx = 0;
-		c.weightx = 0.3;
+		
 		c.weighty = 0.2;
-		buttonPanel.add(userName, c);
-
-		c.gridx = 1;
-	    buttonPanel.add(addUser, c);
-	    
-		c.gridy = 1;
+		c.weightx = 1.0;
 		c.gridx = 0;
-		buttonPanel.add(groupName, c);
+		c.gridy = 0;
+		buttonPanel.add(innerTop, c);
+		
+		c.weighty = 0.3;
+		c.gridy = 2;
+		buttonPanel.add(innerBot, c);
+		
+		c.weighty = 0.6;
+		c.gridy = 1;
+		buttonPanel.add(innerMid, c);
+		
+		c.insets = new Insets(1, 1, 1, 2);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weightx = 0.6;
+		c.weighty = 0.5;
+		innerTop.add(userName, c);
+		innerBot.add(userTotal, c);
 		
 		c.gridx = 1;
-		c.weighty = 0.35;
-	    buttonPanel.add(addGroup, c);
-	    
-	    c.gridx = 0;
-	    c.gridy = 4;
-	    buttonPanel.add(userTotal, c);
-	    
-	    c.gridx = 1;
-	    buttonPanel.add(groupTotal, c);
-	    
-	    c.gridx = 0;
-	    c.gridy = 5;
-	    buttonPanel.add(messageTotal, c);
-	    
-	    c.gridx = 1;
-	    buttonPanel.add(positivePercentage, c);
-	    
-        c.gridx = 0;
-        c.gridy = 2;
-        c.gridwidth = 2;
-        c.gridheight = 1;
-        c.weightx = 0.8;
-	    buttonPanel.add(userView, c);
-	    
-	    c.gridy = 3;
-	    buttonPanel.add(label, c);
-	    
+		c.weightx = 0.4;
+		innerTop.add(addUser, c);
+		innerBot.add(groupTotal, c);
+		
+		c.gridy = 1;
+		c.weighty = 0.5;
+		innerTop.add(addGroup, c);
+		innerBot.add(messageTotal, c);
+		
+		c.gridx = 0;
+		c.weightx = 0.6;
+		innerTop.add(groupName, c);
+		innerBot.add(positivePercentage, c);
+		
+		
+		c.gridy = 0;
+		c.weightx = 1.0;
+		c.weighty = 0.3;
+		innerMid.add(userView, c);
+		
+		c.gridy = 1;
+		c.weighty = 0.7;
+		innerMid.add(label, c);
+
 	    frame.pack();
 	    frame.setVisible(true);
 	    
