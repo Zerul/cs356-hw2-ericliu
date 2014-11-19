@@ -9,27 +9,29 @@ public class AdminPanel implements ActionListener{
 	private HashMap<String, User> userMap;
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
+	JPanel treePanel, buttonPanels;
     JButton addUser, addGroup, userView, userTotal, groupTotal, messageTotal, positivePercentage;
 	JTextField userName, groupName;
 	JLabel label;
-	JPanel treePanel;
+    JList<String> treeView;
+	GridBagConstraints c;
 	
 	private AdminPanel() {
-		
+		String[] test = {"Dont", "forget", "that", "this", "is", "here"};
 		userMap = new HashMap<String, User>();
 		groupMap = new HashMap<String, UserGroup>();
-		
+		c = new GridBagConstraints();
 		//create frame
 		frame = new JFrame("Admin Control Panel.");
-		frame.setPreferredSize(new Dimension(800, 600));
+		frame.setPreferredSize(new Dimension(800, 500));
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(new GridBagLayout());
 		
 		//Panels
 		treePanel = new JPanel();
 		treePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		treePanel.setPreferredSize(new Dimension(400, 600));
-		frame.getContentPane().add(treePanel);
+		buttonPanels = new JPanel();
+		buttonPanels.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 	    
 	    //create buttons
 	    addUser = new JButton("Create a new user");
@@ -48,15 +50,30 @@ public class AdminPanel implements ActionListener{
 	    userView = new JButton("Open user view");
 	    userView.addActionListener(this);
 	    
-	    //text fields
+	    //JList
+	    treeView = new JList<String>(test);
+	    treePanel.add(treeView);
+	    
+	    //JTextFields
 	    userName = new JTextField(20);
 	    groupName = new JTextField(20);
 	    
 	    //test label - use to see if the actions respond
 	    label = new JLabel("Hello.");
 	    
-	    //add content to frame
-	    frame.getContentPane().add(label);
+	    //configure GridBagLayout & add to frame
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.7;
+		c.weighty = 1.0;
+		c.gridx = 0;
+		c.gridy = 0;
+		frame.getContentPane().add(treePanel, c);
+		c.gridx = 1;
+		c.weightx = 1.0;
+		frame.getContentPane().add(buttonPanels, c);
+
+/*	    frame.getContentPane().add(label);
+
 	    frame.getContentPane().add(addUser);
 		frame.getContentPane().add(userName);
 		frame.getContentPane().add(groupName);
@@ -66,7 +83,7 @@ public class AdminPanel implements ActionListener{
 	    frame.getContentPane().add(messageTotal);
 	    frame.getContentPane().add(positivePercentage);
 	    frame.getContentPane().add(userView); 
-	    frame.pack();
+*/	    frame.pack();
 	    frame.setVisible(true);
 	    
 	}
