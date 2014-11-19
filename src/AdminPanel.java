@@ -9,7 +9,7 @@ public class AdminPanel implements ActionListener{
 	private HashMap<String, User> userMap;
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
-	JPanel treePanel, buttonPanels;
+	JPanel treePanel, buttonPanel;
     JButton addUser, addGroup, userView, userTotal, groupTotal, messageTotal, positivePercentage;
 	JTextField userName, groupName;
 	JLabel label;
@@ -30,8 +30,9 @@ public class AdminPanel implements ActionListener{
 		//Panels
 		treePanel = new JPanel();
 		treePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-		buttonPanels = new JPanel();
-		buttonPanels.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		buttonPanel = new JPanel();
+		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+		buttonPanel.setLayout(new GridBagLayout());
 	    
 	    //create buttons
 	    addUser = new JButton("Create a new user");
@@ -68,22 +69,53 @@ public class AdminPanel implements ActionListener{
 		c.gridx = 0;
 		c.gridy = 0;
 		frame.getContentPane().add(treePanel, c);
+		
 		c.gridx = 1;
 		c.weightx = 1.0;
-		frame.getContentPane().add(buttonPanels, c);
+		frame.getContentPane().add(buttonPanel, c);
 
-/*	    frame.getContentPane().add(label);
+		c.insets = new Insets(3, 4, 3, 4);
+		c.gridx = 0;
+		c.weightx = 0.3;
+		c.weighty = 0.2;
+		buttonPanel.add(userName, c);
 
-	    frame.getContentPane().add(addUser);
-		frame.getContentPane().add(userName);
-		frame.getContentPane().add(groupName);
-	    frame.getContentPane().add(addGroup);
-	    frame.getContentPane().add(userTotal);
-	    frame.getContentPane().add(groupTotal);
-	    frame.getContentPane().add(messageTotal);
-	    frame.getContentPane().add(positivePercentage);
-	    frame.getContentPane().add(userView); 
-*/	    frame.pack();
+		c.gridx = 1;
+	    buttonPanel.add(addUser, c);
+	    
+		c.gridy = 1;
+		c.gridx = 0;
+		buttonPanel.add(groupName, c);
+		
+		c.gridx = 1;
+		c.weighty = 0.35;
+	    buttonPanel.add(addGroup, c);
+	    
+	    c.gridx = 0;
+	    c.gridy = 4;
+	    buttonPanel.add(userTotal, c);
+	    
+	    c.gridx = 1;
+	    buttonPanel.add(groupTotal, c);
+	    
+	    c.gridx = 0;
+	    c.gridy = 5;
+	    buttonPanel.add(messageTotal, c);
+	    
+	    c.gridx = 1;
+	    buttonPanel.add(positivePercentage, c);
+	    
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 2;
+        c.gridheight = 1;
+        c.weightx = 0.8;
+	    buttonPanel.add(userView, c);
+	    
+	    c.gridy = 3;
+	    buttonPanel.add(label, c);
+	    
+	    frame.pack();
 	    frame.setVisible(true);
 	    
 	}
