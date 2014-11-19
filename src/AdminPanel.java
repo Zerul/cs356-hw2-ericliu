@@ -43,7 +43,6 @@ public class AdminPanel implements ActionListener{
 	    
 	    //create buttons
 	    addUser = new JButton("Create a new user");
-	    addUser.setPreferredSize(new Dimension(100, 75));
 	    addUser.addActionListener(this);
 	    addGroup= new JButton("Create a new group");
 	    addGroup.addActionListener(this);
@@ -144,18 +143,37 @@ public class AdminPanel implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent a) {
-	    if (a.getActionCommand().equals("Create a new user")) {
-	        userMap.put(userName.getText(), new User(userName.getText()));
-	        label.setText("User: " + userName.getText() + " has been created.");
-	    }
-	    else if (a.getActionCommand().equals("Create a new group")) {
-	    	groupMap.put(groupName.getText(), new UserGroup(groupName.getText()));
-	    	label.setText("Group: " + groupName.getText() + " has been created.");
-	    }
-	    else if (a.getActionCommand().equals("Open user view")) {
-	    	UserView newView = new UserView(userMap.get(userName.getText()));
-	    	label.setText(a.getActionCommand());
-	    }
+		switch (a.getActionCommand()) {
+		
+		case "Create a new user":
+			if (userName.getText().length() < 3) {
+				label.setText("Username is too short, must be at least 3 characters.");
+			} else if (userMap.get(userName.getText().toLowerCase()) == null) {
+				userMap.put(userName.getText().toLowerCase(), new User(userName.getText().toLowerCase()));
+				label.setText("User: " + userName.getText() + " has been created.");
+			} else
+				label.setText("User: " + userName.getText() + " already exists.");
+			break;
+		
+		case "Create a new group":
+			if (groupMap.get(groupName.getText().toLowerCase()) == null) {
+				groupMap.put(groupName.getText(), new UserGroup(groupName.getText()));
+				label.setText("Group: " + groupName.getText() + " has been created.");
+			} else
+				label.setText("Group: " + groupName.getText() + " already exists.");
+			break;  
+			
+		case "Open user view":
+			if (userMap.get(userName.getText().toLowerCase()) != null) {
+				UserView newView = new UserView(userMap.get(userName.getText()));
+				label.setText(a.getActionCommand());
+			} else
+				label.setText("User: " + userName.getText() + " does not exist.");
+		default:
+			break;
+		}
+
+	  /*  
 	    else if (a.getActionCommand().equals("Show message total"))
 	    	label.setText(a.getActionCommand());
 	    else if (a.getActionCommand().equals("Show user total"))
@@ -163,6 +181,6 @@ public class AdminPanel implements ActionListener{
 	    else if (a.getActionCommand().equals("Show positive percentage"))
 	    	label.setText(a.getActionCommand());
 	    else 
-	    	label.setText(a.getActionCommand());
+	    	label.setText(a.getActionCommand());*/
 	}
 }

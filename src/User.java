@@ -23,26 +23,34 @@ public class User {
 		this.id = id;
 	}
 	
-	public String[] getNewsfeed() {
+/*	public String[] getNewsfeed() {
 		String[] temp = new String[newsfeed.size()];
 		int i = temp.length-1;
 		for (String news: newsfeed) {
 			temp[i--] = news;
 		}
 		return temp;
+	}*/
+	
+	public List<String> getNewsfeed() {
+		return newsfeed;
 	}
 	
 	public List<User> getSubscribers() {
 		return subscribers;
 	}
 
-	public String[] getSubscriptions() {
+/*	public String[] getSubscriptions() {
 		String[] temp = new String[subscriptions.size()];
 		int i = temp.length-1;
 		for (User following: subscriptions) {
 			temp[i--] = following.getID();
 		}
 		return temp;
+	}*/
+	
+	public List<User> getSubscriptions() {
+		return subscriptions;
 	}
 	
 	public String getTweetMsg() {
