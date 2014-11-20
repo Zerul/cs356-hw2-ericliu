@@ -6,7 +6,7 @@ import java.util.HashMap;
 public class AdminPanel implements ActionListener{
 	
 	private static AdminPanel adminInstance = null;
-	private HashMap<String, User> userMap;
+	private HashMap<String, UserView> userMap;
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
 	JPanel treePanel, buttonPanel, innerTop, innerMid, innerBot;
@@ -18,7 +18,7 @@ public class AdminPanel implements ActionListener{
 	
 	private AdminPanel() {
 		String[] test = {"Dont", "forget", "that", "this", "is", "here"};
-		userMap = new HashMap<String, User>();
+		userMap = new HashMap<String, UserView>();
 		groupMap = new HashMap<String, UserGroup>();
 		c = new GridBagConstraints();
 		//create frame
@@ -138,7 +138,7 @@ public class AdminPanel implements ActionListener{
 		return adminInstance;
 	}
 	
-	public HashMap<String, User> getUserMap() {
+	public HashMap<String, UserView> getUserMap() {
 		return userMap;
 	}
 
@@ -149,7 +149,7 @@ public class AdminPanel implements ActionListener{
 			if (userName.getText().length() < 3) {
 				label.setText("Username is too short, must be at least 3 characters.");
 			} else if (userMap.get(userName.getText().toLowerCase()) == null) {
-				userMap.put(userName.getText().toLowerCase(), new User(userName.getText().toLowerCase()));
+				userMap.put(userName.getText().toLowerCase(), new UserView(userName.getText().toLowerCase()));
 				label.setText("User: " + userName.getText() + " has been created.");
 			} else
 				label.setText("User: " + userName.getText() + " already exists.");
@@ -165,7 +165,7 @@ public class AdminPanel implements ActionListener{
 			
 		case "Open user view":
 			if (userMap.get(userName.getText().toLowerCase()) != null) {
-				UserView newView = new UserView(userMap.get(userName.getText()));
+				userMap.get(userName.getText().toLowerCase()).setVisible();
 				label.setText(a.getActionCommand());
 			} else
 				label.setText("User: " + userName.getText() + " does not exist.");
