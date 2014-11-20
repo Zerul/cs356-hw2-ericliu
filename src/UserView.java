@@ -5,8 +5,7 @@ import java.util.Vector;
 
 public class UserView implements ActionListener, User {
 	
-    private String id;
-    private String tweetMsg;
+    private String id, tweetMsg;
     private Vector<User> subscribers;
 	private DefaultListModel<String> newsfeed, subscriptions;
 	private JFrame frame;
@@ -21,12 +20,12 @@ public class UserView implements ActionListener, User {
         this.setID(name);
         subscribers = new Vector<User>();
         subscriptions = new DefaultListModel<String>();
+        subscriptions.addElement(getID());
         newsfeed = new DefaultListModel<String>();
         buildGUI();
 	}
-
 	
-	//Interface methods
+	//"User" Interface methods
 	@Override
 	public Vector<User> getSubscribers() {
 		return subscribers;
