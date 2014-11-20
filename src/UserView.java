@@ -148,7 +148,7 @@ public class UserView implements ActionListener, User {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("Subscribe to user")) {
-			if (!subscriptions.contains(userID.getText())) {
+			if (!subscriptions.contains(userID.getText()) && AdminPanel.getInstance().getUserMap().get(userID.getText().toLowerCase()) != null) {
 				subscribe(AdminPanel.getInstance().getUserMap().get(userID.getText().toLowerCase()));
 			}
 		} else if (e.getActionCommand().equals("Post tweet")) {

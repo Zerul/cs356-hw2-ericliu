@@ -1,4 +1,6 @@
 import javax.swing.*;
+import javax.swing.tree.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
@@ -10,17 +12,18 @@ public class AdminPanel implements ActionListener{
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
 	JPanel treePanel, buttonPanel, innerTop, innerMid, innerBot;
+	JScrollPane treePane;
     JButton addUser, addGroup, userView, userTotal, groupTotal, messageTotal, positivePercentage;
 	JTextField userName, groupName;
 	JLabel label;
-    JList<String> treeView;
+    DefaultTreeModel userTree;
+    DefaultMutableTreeNode root;
 	GridBagConstraints c;
 	
 	private AdminPanel() {
-		String[] test = {"Dont", "forget", "that", "this", "is", "here"};
 		userMap = new HashMap<String, UserView>();
 		groupMap = new HashMap<String, UserGroup>();
-		c = new GridBagConstraints();
+		
 		//create frame
 		frame = new JFrame("Admin Control Panel.");
 		frame.setPreferredSize(new Dimension(800, 500));
@@ -32,7 +35,7 @@ public class AdminPanel implements ActionListener{
 		buttonPanel = new JPanel();
 		innerTop = new JPanel();
 		innerMid = new JPanel();
-		innerBot = new JPanel(); 
+		innerBot = new JPanel();
 		treePanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		buttonPanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
 		buttonPanel.setLayout(new GridBagLayout());
@@ -57,9 +60,11 @@ public class AdminPanel implements ActionListener{
 	    userView = new JButton("Open user view");
 	    userView.addActionListener(this);
 	    
-	    //JList
-	    treeView = new JList<String>(test);
-	    treePanel.add(treeView);
+	    //TreeModel
+	    treePane = new JScrollPane();
+	    root = new DefaultMutableTreeNode("root");
+	    userTree = new DefaultTreeModel(root);
+	 //   treePanel.add();
 	    
 	    //JTextFields
 	    userName = new JTextField(20);
@@ -69,6 +74,7 @@ public class AdminPanel implements ActionListener{
 	    label = new JLabel("Hello.");
 	    
 	    //configure GridBagLayout & add to frame
+		c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx = 0.7;
 		c.weighty = 1.0;
