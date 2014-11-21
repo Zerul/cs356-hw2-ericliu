@@ -3,10 +3,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 
-public class UserView implements ActionListener, User {
-	
-    private String id, tweetMsg;
-    private Vector<User> subscribers;
+public class TwitterUser implements ActionListener, User {
+
+	private String id, tweetMsg;
+	private Vector<User> subscribers;
 	private DefaultListModel<String> newsfeed, subscriptions;
 	private JFrame frame;
 	private JPanel topPanel, bottomPanel;
@@ -15,22 +15,21 @@ public class UserView implements ActionListener, User {
 	private JScrollPane userPane, newsfeedPane;
 	private JList<String> userList, newsBox;
 	private GridBagConstraints c;
-	
-	public UserView(String name) {
-        this.setID(name);
-        subscribers = new Vector<User>();
-        subscriptions = new DefaultListModel<String>();
-        subscriptions.addElement(getID());
-        newsfeed = new DefaultListModel<String>();
-        buildGUI();
+
+	public TwitterUser(String name) {
+		this.setID(name);
+		subscribers = new Vector<User>();
+		subscriptions = new DefaultListModel<String>();
+		subscriptions.addElement(getID());
+		newsfeed = new DefaultListModel<String>();
 	}
-	
+
 	//"User" Interface methods
 	@Override
 	public Vector<User> getSubscribers() {
 		return subscribers;
 	}
-	
+
 	@Override
 	public void subscribe(User target) {
 		target.getSubscribers().add(this);
@@ -60,7 +59,13 @@ public class UserView implements ActionListener, User {
 		if (newsBox != null)
 			newsBox.setModel(newsfeed);
 	}
-	
+
+	@Override
+	public String getTweetMsg() {
+		return tweetMsg;
+	}
+
+
 	//Getters and Setters
 	public String getID() {
 		return id;
@@ -70,14 +75,10 @@ public class UserView implements ActionListener, User {
 		this.id = id;
 	}
 
-	public String getTweetMsg() {
-		return tweetMsg;
-	}
-
 	public void setTweetMsg(String tweetMsg) {
 		this.tweetMsg = tweetMsg;
 	}
-	
+
 	public DefaultListModel<String> getNewsfeed() {
 		return newsfeed;
 	}
@@ -85,13 +86,13 @@ public class UserView implements ActionListener, User {
 	public DefaultListModel<String> getSubscriptions() {
 		return subscriptions;
 	}
-	
-	//Creating and managing the GUI
-	public void buildGUI() {
+
+	//Creating the GUI
+	public JFrame buildGUI() {
 		frame = new JFrame(getID() + "'s User View");
 		frame.setPreferredSize(new Dimension(400, 450));
 		frame.getContentPane().setLayout(new GridLayout(2, 1, 3, 4));
-		frame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		//JPanels
 		topPanel = new JPanel();
@@ -141,9 +142,10 @@ public class UserView implements ActionListener, User {
 		frame.getContentPane().add(topPanel);
 		frame.getContentPane().add(bottomPanel);
 		frame.pack();
-		frame.setVisible(false);
+		frame.setVisible(true);
+		return frame;
 	}
-	
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -156,10 +158,6 @@ public class UserView implements ActionListener, User {
 		} else {
 			return;
 		}
-	}
-	
-	public void setVisible() {
-		frame.setVisible(true);
 	}
 
 }

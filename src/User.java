@@ -10,7 +10,7 @@ public interface User {
 	
 	public void update(User u);
 	
-	public String getID();             //possibly unneeded -- complete groups first
+	public String getID();
 	
 	public String getTweetMsg();
 	

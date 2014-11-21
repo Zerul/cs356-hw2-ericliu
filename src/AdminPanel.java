@@ -8,7 +8,7 @@ import java.util.HashMap;
 public class AdminPanel implements ActionListener{
 	
 	private static AdminPanel adminInstance = null;
-	private HashMap<String, UserView> userMap;
+	private HashMap<String, TwitterUser> userMap;
 	private HashMap<String, UserGroup> groupMap;
 	JFrame frame;
 	JPanel treePanel, buttonPanel, innerTop, innerMid, innerBot;
@@ -21,7 +21,7 @@ public class AdminPanel implements ActionListener{
 	GridBagConstraints c;
 	
 	private AdminPanel() {
-		userMap = new HashMap<String, UserView>();
+		userMap = new HashMap<String, TwitterUser>();
 		groupMap = new HashMap<String, UserGroup>();
 		
 		//create frame
@@ -144,7 +144,7 @@ public class AdminPanel implements ActionListener{
 		return adminInstance;
 	}
 	
-	public HashMap<String, UserView> getUserMap() {
+	public HashMap<String, TwitterUser> getUserMap() {
 		return userMap;
 	}
 
@@ -155,7 +155,7 @@ public class AdminPanel implements ActionListener{
 			if (userName.getText().length() < 3) {
 				label.setText("Username is too short, must be at least 3 characters.");
 			} else if (userMap.get(userName.getText().toLowerCase()) == null) {
-				userMap.put(userName.getText().toLowerCase(), new UserView(userName.getText().toLowerCase()));
+				userMap.put(userName.getText().toLowerCase(), new TwitterUser(userName.getText().toLowerCase()));
 				label.setText("User: " + userName.getText() + " has been created.");
 			} else
 				label.setText("User: " + userName.getText() + " already exists.");
@@ -171,7 +171,7 @@ public class AdminPanel implements ActionListener{
 			
 		case "Open user view":
 			if (userMap.get(userName.getText().toLowerCase()) != null) {
-				userMap.get(userName.getText().toLowerCase()).setVisible();
+				userMap.get(userName.getText().toLowerCase()).buildGUI();
 				label.setText(a.getActionCommand());
 			} else
 				label.setText("User: " + userName.getText() + " does not exist.");
