@@ -1,11 +1,12 @@
-import java.util.List;
+import java.util.Vector;
 
-public class UserGroup {
+public class UserGroup implements TwitterElement{
 	private String groupID;
-	private List<String> users;
+	private Vector<TwitterElement> children;
 	
 	public UserGroup(String groupID) {
 		this.setGroupID(groupID);
+		children = new Vector<TwitterElement>();
 	}
 	
 	public String getGroupID() {
@@ -16,12 +17,19 @@ public class UserGroup {
 		this.groupID = groupID;
 	}
 
-	public void addUser(User user) {
-		if (!users.contains(user.getID()))
-            users.add(user.getID());
+	public void add(TwitterElement element) {
+		if (!children.contains(element))
+            children.add(element);
 	}
-	
-	public void removeUser(User user) {
-		users.remove(user.getID());
+
+	public String toString() {
+		return this.groupID;
+	}
+
+	@Override
+	public void accept(TwitterElementVisitor v) {
+		for(TwitterElement element: children) {
+			element.accept(v);
+		}
 	}
 }

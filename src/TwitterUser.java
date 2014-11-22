@@ -3,7 +3,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
 
-public class TwitterUser implements ActionListener, User {
+public class TwitterUser implements ActionListener, User, TwitterElement{
 
 	private String id, tweetMsg;
 	private Vector<User> subscribers;
@@ -20,7 +20,7 @@ public class TwitterUser implements ActionListener, User {
 		this.setID(name);
 		subscribers = new Vector<User>();
 		subscriptions = new DefaultListModel<String>();
-		subscriptions.addElement(getID());
+		getSubscriptions().addElement(getID());
 		newsfeed = new DefaultListModel<String>();
 	}
 
@@ -33,7 +33,7 @@ public class TwitterUser implements ActionListener, User {
 	@Override
 	public void subscribe(User target) {
 		target.getSubscribers().add(this);
-		this.subscriptions.addElement(target.getID());
+		this.getSubscriptions().addElement(target.getID());
 		this.update(target);
 		if (userList != null)
 			userList.setModel(subscriptions);
@@ -41,7 +41,7 @@ public class TwitterUser implements ActionListener, User {
 
 	@Override
 	public void tweet(String msg) {
-		tweetMsg = msg;
+		setTweetMsg(msg);
 		update(this);
 		notifySubscribers();
 	}
@@ -65,6 +65,10 @@ public class TwitterUser implements ActionListener, User {
 		return tweetMsg;
 	}
 
+	@Override
+	public void accept(TwitterElementVisitor v) {
+		v.visitTwitterUser(this);
+	}
 
 	//Getters and Setters
 	public String getID() {
@@ -158,6 +162,10 @@ public class TwitterUser implements ActionListener, User {
 		} else {
 			return;
 		}
+	}
+	
+	public String toString() {
+		return getID();
 	}
 
 }
