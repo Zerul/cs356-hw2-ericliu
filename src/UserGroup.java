@@ -28,6 +28,7 @@ public class UserGroup implements TwitterElement{
 
 	@Override
 	public void accept(TwitterElementVisitor v) {
+		v.visitGroup(this);
 		for(TwitterElement element: children) {
 			element.accept(v);
 		}

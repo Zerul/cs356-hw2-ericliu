@@ -1,9 +1,9 @@
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Enumeration;
 import java.util.HashMap;
 
 public class AdminPanel implements ActionListener {
@@ -59,24 +59,27 @@ public class AdminPanel implements ActionListener {
 			break;
 			
 		case "Show user total":
-			//THEORY -- use Breadth first search, use children() method, but add those with children to a queue instead of going deeper.
-			UserCountVisitor v = new UserCountVisitor();
-			Enumeration test = root.children();
-			if (test != null) {
-				while(test.hasMoreElements()) {
-					((TwitterElement)((DefaultMutableTreeNode)test.nextElement()).getUserObject()).accept(v);
-				}
-			}
-			label.setText(Integer.toString(v.getCounter()));
+			UserCountVisitor uv = new UserCountVisitor();
+			((TwitterElement)root.getUserObject()).accept(uv);
+			label.setText("Total # of users: " + Integer.toString(uv.getCounter()));
 		    break;
 		    
 		case "Show group total":
+			GroupCountVisitor gv = new GroupCountVisitor();
+			((TwitterElement)root.getUserObject()).accept(gv);
+			label.setText("Total # of groups: " + Integer.toString(gv.getCounter()));
 			break;
 			
 		case "Show message total":
+			MessageCountVisitor mv = new MessageCountVisitor();
+			((TwitterElement)root.getUserObject()).accept(mv);
+			label.setText("Total # of messages: " + Integer.toString(mv.getCounter()));
 			break;
 
 		case "Show positive percentage":
+			PositiveCountVisitor pv = new PositiveCountVisitor();
+			((TwitterElement)root.getUserObject()).accept(pv);
+			label.setText("% of positive messages: " + Double.toString(pv.getPercentage()));
 			break;
 			
 		default:
@@ -97,7 +100,7 @@ public class AdminPanel implements ActionListener {
 			temp.setAllowsChildren(false);
 			try {
 				selectedNode.add(temp);
-				((UserGroup)selectedNode.getUserObject()).add(groupMap.get(name));;
+				((UserGroup)selectedNode.getUserObject()).add(userMap.get(name));;
 			} catch (NullPointerException e) {
 				root.add(temp);
 				((UserGroup)root.getUserObject()).add(userMap.get(name));;
@@ -173,7 +176,7 @@ public class AdminPanel implements ActionListener {
 		groupTotal.addActionListener(this);
 		messageTotal = new JButton("Show message total");
 		messageTotal.addActionListener(this);
-		positivePercentage = new JButton("Show Positive Percentage");
+		positivePercentage = new JButton("Show positive percentage");
 		positivePercentage.addActionListener(this);
 		userView = new JButton("Open user view");
 		userView.addActionListener(this);
@@ -212,6 +215,7 @@ public class AdminPanel implements ActionListener {
 
 		//test label - use to see if the actions respond
 		label = new JLabel("Hello.");
+		label.setHorizontalAlignment(SwingConstants.CENTER);
 
 		//configure GridBagLayout & add to frame
 		c = new GridBagConstraints();
@@ -256,12 +260,12 @@ public class AdminPanel implements ActionListener {
 		c.gridy = 1;
 		c.weighty = 0.5;
 		innerTop.add(addGroup, c);
-		innerBot.add(messageTotal, c);
+		innerBot.add(positivePercentage, c);
 
 		c.gridx = 0;
 		c.weightx = 0.6;
 		innerTop.add(groupName, c);
-		innerBot.add(positivePercentage, c);
+		innerBot.add(messageTotal, c);
 
 
 		c.gridy = 0;

@@ -1,9 +1,9 @@
 
-public class UserCountVisitor implements TwitterElementVisitor {
+public class GroupCountVisitor implements TwitterElementVisitor {
 
-	private int counter = 0;
+	private int counter;
 	
-	public UserCountVisitor() {
+	public GroupCountVisitor() {
 		setCounter(0);
 	}
 	
@@ -17,12 +17,12 @@ public class UserCountVisitor implements TwitterElementVisitor {
 
 	@Override
 	public void visitTwitterUser(TwitterUser u) {
-		this.setCounter(getCounter()+1);
+		return;
 	}
 
 	@Override
 	public void visitGroup(UserGroup g) {
-		return;
+		this.setCounter(getCounter()+1);
 	}
 
 }
