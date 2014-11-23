@@ -163,7 +163,7 @@ public class TwitterUser implements ActionListener, User, TwitterElement{
 			return;
 		}
 	}
-	
+
 	public String toString() {
 		return getID();
 	}

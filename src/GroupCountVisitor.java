@@ -2,11 +2,11 @@
 public class GroupCountVisitor implements TwitterElementVisitor {
 
 	private int counter;
-	
+
 	public GroupCountVisitor() {
 		setCounter(0);
 	}
-	
+
 	public int getCounter() {
 		return counter;
 	}

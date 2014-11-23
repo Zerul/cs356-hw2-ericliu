@@ -2,11 +2,11 @@
 public class UserCountVisitor implements TwitterElementVisitor {
 
 	private int counter = 0;
-	
+
 	public UserCountVisitor() {
 		setCounter(0);
 	}
-	
+
 	public int getCounter() {
 		return counter;
 	}

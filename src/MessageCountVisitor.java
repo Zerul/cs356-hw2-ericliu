@@ -2,11 +2,11 @@
 public class MessageCountVisitor implements TwitterElementVisitor {
 
 	private int counter = 0;
-	
+
 	public MessageCountVisitor() {
 		setCounter(0);
 	}
-	
+
 	public int getCounter() {
 		return counter;
 	}

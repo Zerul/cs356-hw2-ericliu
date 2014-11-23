@@ -1,7 +1,6 @@
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
@@ -36,40 +35,40 @@ public class AdminPanel implements ActionListener {
 
 	public HashMap<String, TwitterUser> getUserMap() {
 		return userMap;
-	}
+	}		
 
 	public void actionPerformed(ActionEvent a) {
 		switch (a.getActionCommand()) {
 
 		case "Create a new user":
 			if (selectedNode == null || !(selectedNode.getUserObject() instanceof TwitterUser))
-			    createUser(userName.getText().toLowerCase());
+				createUser(userName.getText().toLowerCase());
 			break;
 
 		case "Create a new group":
 			if (selectedNode == null || !(selectedNode.getUserObject() instanceof TwitterUser))
-			    createGroup(groupName.getText().toLowerCase());
+				createGroup(groupName.getText().toLowerCase());
 			break;  
 
 		case "Open user view":
 			if (selectedNode != null && (selectedNode.getUserObject() instanceof TwitterUser))
-			    openView(selectedNode);
+				openView(selectedNode);
 			else
 				label.setText("You must select a user.");
 			break;
-			
+
 		case "Show user total":
 			UserCountVisitor uv = new UserCountVisitor();
 			((TwitterElement)root.getUserObject()).accept(uv);
 			label.setText("Total # of users: " + Integer.toString(uv.getCounter()));
-		    break;
-		    
+			break;
+
 		case "Show group total":
 			GroupCountVisitor gv = new GroupCountVisitor();
 			((TwitterElement)root.getUserObject()).accept(gv);
 			label.setText("Total # of groups: " + Integer.toString(gv.getCounter()));
 			break;
-			
+
 		case "Show message total":
 			MessageCountVisitor mv = new MessageCountVisitor();
 			((TwitterElement)root.getUserObject()).accept(mv);
@@ -81,7 +80,7 @@ public class AdminPanel implements ActionListener {
 			((TwitterElement)root.getUserObject()).accept(pv);
 			label.setText("% of positive messages: " + Double.toString(pv.getPercentage()));
 			break;
-			
+
 		default:
 			break;
 		}
@@ -133,14 +132,14 @@ public class AdminPanel implements ActionListener {
 		} else
 			label.setText("Group: " + name + " already exists.");
 	}
-	
+
 	//Checks to see that the selectedNode doesn't allow children (thus is a user)
 	//before calling the buildGUI() function
 	public void openView(DefaultMutableTreeNode n) {
 		((TwitterUser) n.getUserObject()).buildGUI();
 		label.setText(n.toString() + "'s user view opened.");
 	}
-	
+
 	//Creates the UI for the admin control panel
 	public void generateUI() {
 
@@ -280,16 +279,17 @@ public class AdminPanel implements ActionListener {
 		frame.pack();
 		frame.setVisible(true);
 	}
-	
+
 	//Makes UserGroup icons on the tree appear as folders
+	@SuppressWarnings("serial")
 	private static class CustomRenderer extends DefaultTreeCellRenderer {
-		
+
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value,
 				boolean selected, boolean expanded, boolean leaf, int row,
 				boolean hasFocus) {
 			super.getTreeCellRendererComponent(tree, value, selected, expanded, leaf, row, hasFocus);
-			
+
 			if (value instanceof DefaultMutableTreeNode) {
 				DefaultMutableTreeNode n = (DefaultMutableTreeNode) value;
 				if (n.getUserObject() instanceof UserGroup) {
