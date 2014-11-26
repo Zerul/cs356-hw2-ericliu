@@ -1,4 +1,5 @@
 import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Vector;
@@ -8,19 +9,21 @@ public class TwitterUser implements ActionListener, User, TwitterElement{
 	private String id, tweetMsg;
 	private Vector<User> subscribers;
 	private DefaultListModel<String> newsfeed, subscriptions;
-	private JFrame frame;
+	private JFrame frame, timeFrame;
 	private JPanel topPanel, bottomPanel;
 	private JTextField userID, msgBox;
-	private JButton follow, tweet;
+	private JButton follow, tweet, timeButton;
 	private JScrollPane userPane, newsfeedPane;
-	private JList<String> userList, newsBox;
+	private JList<String> userList, newsBox, timeInfo;
 	private GridBagConstraints c;
+	private long creationTime , lastUpdateTime;
 
 	public TwitterUser(String name) {
+		setCreationTime(System.currentTimeMillis());
 		this.setID(name);
 		subscribers = new Vector<User>();
 		subscriptions = new DefaultListModel<String>();
-		getSubscriptions().addElement(getID());
+		getSubscriptions().addElement("User created: " + Long.toString(creationTime));
 		newsfeed = new DefaultListModel<String>();
 	}
 
@@ -58,6 +61,8 @@ public class TwitterUser implements ActionListener, User, TwitterElement{
 		newsfeed.add(0, user.getID() + ": " + user.getTweetMsg());
 		if (newsBox != null)
 			newsBox.setModel(newsfeed);
+		setLastUpdateTime(System.currentTimeMillis());
+		newsfeed.add(0, "Last updated: " + Long.toString(getLastUpdateTime()));
 	}
 
 	@Override
@@ -91,9 +96,25 @@ public class TwitterUser implements ActionListener, User, TwitterElement{
 		return subscriptions;
 	}
 
+	public long getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(long creationTime) {
+		this.creationTime = creationTime;
+	}
+
+	public long getLastUpdateTime() {
+		return lastUpdateTime;
+	}
+
+	public void setLastUpdateTime(long lastUpdateTime) {
+		this.lastUpdateTime = lastUpdateTime;
+	}
+
 	//Creating the GUI
 	public JFrame buildGUI() {
-		frame = new JFrame(getID() + "'s User View");
+		frame = new JFrame(getID() + " 's User View");
 		frame.setPreferredSize(new Dimension(400, 450));
 		frame.getContentPane().setLayout(new GridLayout(2, 1, 3, 4));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

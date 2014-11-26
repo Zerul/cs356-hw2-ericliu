@@ -1,6 +1,7 @@
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
@@ -10,16 +11,16 @@ public class AdminPanel implements ActionListener {
 	private static AdminPanel adminInstance = null;
 	private HashMap<String, TwitterUser> userMap;
 	private HashMap<String, UserGroup> groupMap;
-	JFrame frame;
-	JPanel treePanel, buttonPanel, innerTop, innerMid, innerBot;
-	JScrollPane treePane;
-	JButton addUser, addGroup, userView, userTotal, groupTotal, messageTotal, positivePercentage;
-	JTextField userName, groupName;
-	JLabel label;
-	JTree tree;
-	DefaultTreeModel modelTree;
-	DefaultMutableTreeNode root, selectedNode, temp;
-	GridBagConstraints c;
+	private JFrame frame;
+	private JPanel treePanel, buttonPanel, innerTop, innerMid, innerBot;
+	private JScrollPane treePane;
+	private JButton addUser, addGroup, userView, userTotal, groupTotal, messageTotal, positivePercentage, validateUsers, lastUpdated;
+	private JTextField userName, groupName;
+	private JLabel label;
+	private JTree tree;
+	private DefaultTreeModel modelTree;
+	private DefaultMutableTreeNode root, selectedNode, temp;
+	private GridBagConstraints c;
 
 	private AdminPanel() {
 		userMap = new HashMap<String, TwitterUser>();
@@ -80,6 +81,14 @@ public class AdminPanel implements ActionListener {
 			((TwitterElement)root.getUserObject()).accept(pv);
 			label.setText("% of positive messages: " + Double.toString(pv.getPercentage()));
 			break;
+			
+		case "Validate Users":
+			validateUsers();
+			break;
+			
+		case "Find last updated user":
+			userUpdateTime();
+			break;
 
 		default:
 			break;
@@ -139,6 +148,32 @@ public class AdminPanel implements ActionListener {
 		((TwitterUser) n.getUserObject()).buildGUI();
 		label.setText(n.toString() + "'s user view opened.");
 	}
+	
+	public void validateUsers() {
+		ValidateUsersVisitor vv = new ValidateUsersVisitor();
+		((TwitterElement)root.getUserObject()).accept(vv);
+	    JFrame vFrame = new JFrame("User Validation");
+	    JList<String> vList = new JList<String>(vv.results());
+	    vFrame.setPreferredSize(new Dimension(300, 200));
+	    vFrame.getContentPane().setLayout(new GridLayout());
+	    vFrame.getContentPane().add(vList);
+	    vFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    vFrame.pack();
+	    vFrame.setVisible(true);
+	}
+	
+	public void userUpdateTime() {
+		LastUpdateVisitor lv = new LastUpdateVisitor();
+		((TwitterElement)root.getUserObject()).accept(lv);
+	    JFrame vFrame = new JFrame("Last updated user");
+	    JLabel timeLabel = new JLabel(lv.getId());
+	    vFrame.setPreferredSize(new Dimension(300, 200));
+	    vFrame.getContentPane().setLayout(new GridLayout());
+	    vFrame.getContentPane().add(timeLabel);
+	    vFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	    vFrame.pack();
+	    vFrame.setVisible(true);
+	}
 
 	//Creates the UI for the admin control panel
 	public void generateUI() {
@@ -179,6 +214,10 @@ public class AdminPanel implements ActionListener {
 		positivePercentage.addActionListener(this);
 		userView = new JButton("Open user view");
 		userView.addActionListener(this);
+		validateUsers = new JButton("Validate Users");
+		validateUsers.addActionListener(this);
+		lastUpdated = new JButton("Find last updated user");
+		lastUpdated.addActionListener(this);
 
 		//Tree Configuration
 		root = new DefaultMutableTreeNode(new UserGroup("root"));
@@ -266,15 +305,26 @@ public class AdminPanel implements ActionListener {
 		innerTop.add(groupName, c);
 		innerBot.add(messageTotal, c);
 
-
 		c.gridy = 0;
-		c.weightx = 1.0;
+		c.weightx = 0.5;
 		c.weighty = 0.3;
 		innerMid.add(userView, c);
+		
+		c.gridx = 1;
+		c.weightx = 0.5;
+		c.weighty = 0.3;
+		innerMid.add(validateUsers, c);
 
+		c.gridx = 0;
 		c.gridy = 1;
-		c.weighty = 0.7;
+		c.weighty = 0.3;
+		c.weightx = 0.6;
 		innerMid.add(label, c);
+		
+		c.gridx = 1;
+		c.weightx = 0.5;
+		innerMid.add(lastUpdated, c);
+		
 
 		frame.pack();
 		frame.setVisible(true);
